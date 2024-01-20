@@ -1,3 +1,5 @@
+BORDCR:     EQU $5C48       ; system variable for border colour
+
 ;--------------------------------------------------------------------
 ; Gets the corresponding sprite to paint on the marker.
 ; Input:  A  -> score.
@@ -121,13 +123,14 @@ LD   BC, $17ff              ; number of bytes to erase
 LDIR                        ; clear the rest of the screen
 
 ;LD   HL, $5800              ; point to the 1st byte of the attribute area
+LD   A, $07                 ; black paper, white ink
 INC  HL                     ; optimised
-LD   (HL), $07              ; white ink, black background
+LD   (HL), A; $07              ; white ink, black background
 ;LD   DE, $5801              ; 2nd byte of attribute file
 INC  DE                     ; optimised
 LD   BC, $2ff               ; size of attribute file - 1 byte (already in HL)
 LDIR                        ; set all bytes in the attribute file
-
+LD   (BORDCR), A
 RET
 ; ------------------------------------------------------------------------------
 
