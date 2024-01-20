@@ -19,6 +19,8 @@ LD   HL, PADDLE1POS_INI
 LD   (paddle1pos), HL
 LD   HL, PADDLE2POS_INI
 LD   (paddle2pos), HL
+LD   A, $03                 ; set sound effect
+CALL PlaySound              ; and play it
 
 Loop:
 ld   a, (ballSetting)
@@ -70,6 +72,7 @@ JP   Loop                   ; otherwise keep going with the current game
 
 include "controls.asm"
 include "game.asm"
+include "sound.asm"
 include "sprite.asm"
 include "video.asm"
 

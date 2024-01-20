@@ -16,6 +16,8 @@ LD   (ballPos), HL          ; store new ball coords
 JR   moveBall_x             ; now need to check the horizontal offset
 
 moveBall_upChg:
+LD   A, $03                 ; set sound effect
+CALL PlaySound              ; and play it
 LD   A, (ballSetting)       ; set bit 7 of ballSetting to show ball is going
 OR   $80                    ; down after hitting the top of the screen
 LD   (ballSetting), A       ; and store the new value.
@@ -35,6 +37,8 @@ LD   (ballPos), HL
 JR   moveBall_x
 
 moveBall_downChg:
+LD   A, $03                 ; set sound effect
+CALL PlaySound              ; and play it
 LD   A, (ballSetting)       ; disable bit 7 to show that ball is now going up
 AND  $7F                    ;
 LD   (ballSetting), A       ;
@@ -68,6 +72,8 @@ LD   (ballRotation), A      ;
 RET
 
 moveBall_rightChg:
+LD   A, $01                 ; set sound effect
+CALL PlaySound              ; and play it
 LD   HL, p1points           ; add 1 point to Player 1's score
 inc  (HL)                   ;
 CALL PrintPoints            ; and display
@@ -79,6 +85,8 @@ CALL PrintPoints            ; and display
 CALL ClearBall              ; p.126 bottom
 CALL SetBallLeft            ; p.126 bottom
 ;JR   moveBall_end           ; and jump to the end of the routine
+LD   A, $03                 ; set sound effect
+CALL PlaySound              ; and play it
 RET
 
 moveBall_left:
@@ -103,6 +111,8 @@ LD   (ballRotation), A      ;
 RET
 
 moveBall_leftChg:
+LD   A, $01                 ; set sound effect
+CALL PlaySound              ; and play it
 LD   HL, p2points           ; add 1 to player 2's score...
 INC  (HL)                   ;
 CALL PrintPoints            ; and display
@@ -113,7 +123,8 @@ CALL PrintPoints            ; and display
 ;LD   (ballSetting), A       ;
 CALL ClearBall              ; p.127 TOP
 CALL SetBallRight           ; p.127 TOP
-
+LD   A, $03                 ; set sound effect
+CALL PlaySound              ; and play it
 ;moveBall_end:
 RET
 
@@ -190,7 +201,8 @@ RET  NZ                     ; no, so return
 LD   HL, (paddle2pos)       ; check for collision in y-coords
 CALL CheckCrossY            ;
 RET  NZ                     ; no, so return
-
+LD   A, $02                 ; set sound effect
+CALL PlaySound              ; and play it
 LD   A, (ballSetting)       ; to get here there must have been a collision
 OR  $40                     ; Set status bit to make ball move left
 LD  (ballSetting), A        ; store updated setting in variable
@@ -205,7 +217,8 @@ RET  NZ                     ; no, so return
 LD   HL, (paddle1pos)       ; check for collision in y-coords
 CALL CheckCrossY            ;
 RET  NZ                     ; no, so return
-
+LD   A, $02                 ; set sound effect
+CALL PlaySound              ; and play it
 LD   A, (ballSetting)       ; to get here there must have been a collision
 AND  $BF                    ; Set status bit to make ball move right
 LD  (ballSetting), A        ; store updated setting in variable
