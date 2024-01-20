@@ -32,7 +32,7 @@ ballMovCount:   db $00      ; used to change the tilt of the ball
 ; bits 3 to 5: ball speed
 ; bit 6:       X direction: 0 right / 1 left
 ; bit 7:       Y direction: 0 up / 1 down
-ballSetting:    DW  $21     ; Y X yyy xxx.  0010 0001=Right, upwards, slowly.
+ballSetting:    DW  $19;$21     ; Y X yyy xxx.  0010 0001=Right, upwards, slowly.
 ballRotation:   DW  $F8     ; right positive, left negative
 
 ; Ball sprite:

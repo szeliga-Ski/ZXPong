@@ -1,4 +1,5 @@
-ORG  $8000
+;ORG  $8000
+ORG  $5DAD      ; for 16K compatibility
 
 Main:
 LD   A, $00                 ; black border
@@ -81,4 +82,5 @@ countLoopPaddle: DB $00     ; used to slow the paddles down
 p1points:        db $00     ; Player 1's score
 p2points:        db $00     ; Player 2's score
 
-end  $8000
+;end  $8000
+end  Main   ; 16k compatibility
