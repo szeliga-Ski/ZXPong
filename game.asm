@@ -268,7 +268,8 @@ CP   B                      ; compare with ball position
 JR   C, checkCrossY_2_5     ; carry, so ball is lower down
 LD   A, (ballSetting)       ; no carry so ball collided
 AND  $40                    ; leave horizontal direction (already calculated)
-OR   $21                    ; vertical speed=up, speed 3, semi-diagonal tilt
+;OR   $21                    ; vertical speed=up, speed 3, semi-diagonal tilt
+OR   $19
 JR   checkCrossY_end        ; jump to end of routine
 
 checkCrossY_2_5:            ; see if ball collided with 2nd part of paddle
@@ -278,7 +279,8 @@ CP   B                      ; compare with ball position
 JR   C, checkCrossY_3_5     ; carry => ball is lower
 LD   A, (ballSetting)       ; no carry so ball collided
 AND  $40                    ; leave horizontal direction (already calculated)
-OR   $1A                    ; vertical speed=up, speed 3, semi-diagonal tilt
+;OR   $1A                    ; vertical speed=up, speed 3, semi-diagonal tilt
+OR   $12
 JR   checkCrossY_end        ; jump to end of routine
 
 checkCrossY_3_5:            ; see if ball collided with 3rd part of paddle
@@ -288,7 +290,8 @@ CP   B                      ; compare with ball position
 JR   C, checkCrossY_4_5     ; carry => ball is lower
 LD   A, (ballSetting)       ; no carry so ball collided
 AND  $C0                    ; leave horizontal & vertical dir's (już calc'd)
-OR   $17                    ; speed 1, semi-flat tilt
+;OR   $17                    ; speed 1, semi-flat tilt
+OR   $0F
 JR   checkCrossY_end        ; jump to end of routine
 
 checkCrossY_4_5:            ; see if ball collided with 4th part of paddle
@@ -298,13 +301,15 @@ CP   B                      ; compare with ball position
 JR   C, checkCrossY_5_5     ; carry => ball is lower
 LD   A, (ballSetting)       ; no carry so ball collided
 AND  $40                    ; leave horizontal dir's (already calc'd)
-OR   $9A                    ; down, speed 2, semi-flat tilt
+;OR   $9A                    ; down, speed 2, semi-flat tilt
+OR   $92
 JR   checkCrossY_end        ; jump to end of routine
 
 checkCrossY_5_5:
 LD   A, (ballSetting)
 AND  $40                    ; keep horizontal direction
-OR   $A1                    ; vertical direction, speed 3, diagonal angle
+;OR   $A1                    ; vertical direction, speed 3, diagonal angle
+OR   $99
 
 ; There is a collision
 checkCrossY_end:
@@ -336,7 +341,8 @@ LD   (ballRotation),  A     ;
 LD   A, (ballSetting)       ; Load ball configuration
 ;AND  $BF                    ; Mask= 1011 1111 so that ball is going right
 AND  $80                    ; keep y-dir
-OR   $21                    ; right, speed 3, diagonal tilt
+;OR   $21                    ; right, speed 3, diagonal tilt
+OR   $19
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
@@ -350,7 +356,8 @@ LD   (ballRotation),  A     ;
 LD   A, (ballSetting)       ; Load ball configuration
 ;OR   $40                    ; Mask= 0100 0000 so that ball is going left
 AND  $80                    ; keep y-dir
-OR   $61                    ; left, speed 3, diagonal tilt
+;OR   $61                    ; left, speed 3, diagonal tilt
+OR   $59
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
