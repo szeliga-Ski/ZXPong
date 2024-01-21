@@ -16,9 +16,11 @@ BEEPER:     EQU $03B5           ; ROM routine: HL=note, DE=duration
 PlaySound:
 PUSH    DE
 PUSH    HL
-CP      $01                     ; see if it's a point scored
+;CP      $01                     ; see if it's a point scored
+DEC     A
 JR      Z, playSound_point
-CP      $02                     ; paddle collision?
+;CP      $02                     ; paddle collision?
+DEC     A
 JR      Z, playSound_paddle
 LD      HL, C_5                 ; must be the paddle then!
 LD      DE, C_5_FQ
