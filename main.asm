@@ -1,5 +1,6 @@
 ;ORG  $8000
-ORG  $5DAD      ; for 16K compatibility
+;ORG  $5DAD      ; for 16K compatibility
+ORG  $5E88      ; 16k and loading screen
 
 Main:
 LD   A, $00                 ; black border
