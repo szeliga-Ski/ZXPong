@@ -210,6 +210,21 @@ DJNZ printPaddle_loop       ; loop for the rest of the visible paddle
 LD   (HL), ZERO             ; blank line at the bottom of the paddle
 RET
 ; ------------------------------------------------------------------------------
+; MSS: I wrote this after changing the paddles to reset position after points
+;      have been scored.
+ErasePaddle:
+LD   (HL), ZERO             ; to print first scan line of the paddle
+CALL NextScan               ; move to the next line
+LD   B, $16                 ; paddle has 22 visible scan lines
+
+erasePaddle_loop:
+LD   (HL), ZERO             ; print paddle shape
+CALL NextScan               ; move to the next line
+DJNZ erasePaddle_loop       ; loop for the rest of the visible paddle
+LD   (HL), ZERO             ; blank line at the bottom of the paddle
+RET
+; ------------------------------------------------------------------------------
+
 
 ; ------------------------------------------------------------------------------
 CheckBottom:

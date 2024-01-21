@@ -346,10 +346,15 @@ OR   $19
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
-
-
+; MSS: I added the following to reset the paddles to the middle of the screen
+;      after a point has been scored.
+LD   HL, (paddle1pos)
+CALL ErasePaddle
+LD   HL, (paddle2pos)
+CALL ErasePaddle
 LD   HL, PADDLE1POS_INI     ; reset the paddle positions
 LD   (paddle1pos), HL
+CALL PrintPaddle
 LD   HL, PADDLE2POS_INI
 LD   (paddle2pos), HL
 CALL PrintPaddle 
@@ -369,9 +374,15 @@ OR   $59
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
-
+; MSS: I added the following to reset the paddles to the middle of the screen
+;      after a point has been scored.
+LD   HL, (paddle1pos)
+CALL ErasePaddle
+LD   HL, (paddle2pos)
+CALL ErasePaddle
 LD   HL, PADDLE1POS_INI     ; reset the paddle positions
 LD   (paddle1pos), HL
+CALL PrintPaddle
 LD   HL, PADDLE2POS_INI
 LD   (paddle2pos), HL
 CALL PrintPaddle 
