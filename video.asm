@@ -335,6 +335,9 @@ ret
 ; Alters the value of the AF, BC, DE and HL registers.
 ;--------------------------------------------------------------------
 PrintPoints:
+CALL printPoint_1_print
+JR   printPoint_2_print
+printPoint_1_print:
 ld   a, (p1points)         ; A = points player 1
 call GetPointSprite        ; Gets sprite to be painted in marker
 ; 1st digit of player 1
@@ -345,29 +348,22 @@ ld   d, (hl)               ; D = (HL)
 push hl                    ; Preserves the value of HL
 ld   hl, POINTS_P1         ; HL = memory address where to paint
                            ; points player 1
-;call printPoint_print      ; Paint 1st digit marker player 1
 CALL PrintPoint
-
 pop  hl                    ; Retrieves the value of HL
+
 ; 2nd digit of player 1
 inc  hl			
-;inc  hl                    ; HL = low part 2nd digit address
 ld   e, (hl)               ; E = (HL)
 inc  hl                    ; HL = high side address 2nd digit
 ld   d, (hl)               ; D = (HL)
-ld   hl, POINTS_P1         ; HL = memory address where to paint
-                           ; points player 1
-;inc  l                     ; HL = address where to paint 2nd digit
 ;Spirax
 LD   HL, POINTS_P1 + 1
-
-;call printPoint_print      ; Paint 1st digit marker player 1
 CALL PrintPoint
+RET
 
 printPoint_2_print:
 ld   a, (p2points)         ; A = points player 2
 call GetPointSprite        ; Gets sprite to be painted in marker
-
 ; 1st digit of player 2
 ld   e, (hl)               ; HL = low part 1st digit address
                            ; E = (HL)
@@ -376,37 +372,27 @@ ld   d, (hl)               ; D = (HL)
 push hl                    ; Preserves value of HL
 ld   hl, POINTS_P2         ; HL = memory address where to paint
                            ; points player 2
-;call printPoint_print      ; Paint 1st digit marker player 1
 CALL PrintPoint
 pop  hl                    ; Retrieves the value of HL
+
 ; 2nd digit of player 2
 inc  hl			
-;inc  hl                    ; HL = low part 2nd digit address
 ld   e, (hl)               ; E = (HL)
 inc  hl                    ; HL = high side address 2nd digit
 ld   d, (hl)               ; D = (HL)
-;ld   hl, POINTS_P2         ; HL = memory address where to paint
-                           ; points player 2
 ; Spirax
 LD   HL, POINTS_P2 + 1
-;inc  l                     ; HL = address where 2nd digit paints
 
 ; Paint the second digit of player 2's marker.
-
-;printPoint_print:
 PrintPoint:
 ld   b, $10                ; Each digit: 1 byte x 16 (scanlines)
-;push de                    ; Preserves the value of DE
-;push hl                    ; Preserves the value of HL
+
 printPoint_printLoop:
 ld   a, (de)               ; A = byte to be painted
 ld   (hl), a               ; Paints the byte
 inc  de                    ; DE = next byte
 call NextScan              ; HL = next scanline
 djnz printPoint_printLoop  ; Until B = 0
-
-;pop  hl                    ; Retrieves the value of HL
-;pop  de                    ; Retrieves the value of DE
 
 ret
 ; ------------------------------------------------------------------------------
@@ -427,129 +413,19 @@ LD   A, L
 AND  $1F
 CP   POINTS_X1_L
 RET  C
-JR   Z, reprintPoint_1_print
+JR   Z, printPoint_1_print
 CP   POINTS_X2_R
 JR   Z, printPoint_2_print
 RET  NC
 reprintPoint_1:
 CP   POINTS_X1_R
-JR   C, reprintPoint_1_print
-JR   NZ, reprintPoint_2
-reprintPoint_1_print:
-LD   A, (p1points)
-CALL GetPointSprite
-;PUSH HL
-;1st digit
-LD   E, (HL)
-INC  HL
-LD   D, (HL)
-push  hl
-ld   hl, POINTS_P1
-call PrintPoint
-pop  hl
-;2nd digit
-inc  hl
-LD   E, (HL)
-INC  HL
-LD   D, (HL)
-LD   HL, POINTS_P1 + 1
-;POP  HL
-;INC  HL
-;INC  HL
-;LD   E, (HL)
-;INC  HL
-;LD   D, (HL)
-;LD   HL, POINTS_P1
-;INC  L
-JR   PrintPoint
+JR   Z, printPoint_1_print
+JR   C, printPoint_1_print
+
 reprintPoint_2:
 CP   POINTS_X2_L
 RET  C
-;reprintPoint_2_print:
-;LD   A, (p2points)
-;CALL GetPointSprite
-;PUSH HL
-;;1st digit
-;LD   E, (HL)
-;INC  HL
-;LD   D, (HL)
-;LD   HL, POINTS_P2
-;callPrintPoint
-;POP  HL
-;;2nd digit
-;INC  HL
-;INC  HL
-;LD   E, (HL)
-;INC  HL
-;LD   D, (HL)
-;LD   HL, POINTS_P2
-;INC  L
-;JR   PrintPoint
+
 JR   printPoint_2_print
 
-; Old version was replaced in Step 10:
-;ld   a, (p1points)         ; A = points player 1
-;call GetPointSprite        ; Gets sprite to be painted marker
-;push hl                    ; Preserves value of HL
-;; 1st digit of player 1
-;ld   e, (hl)               ; HL = low part 1st digit address
-;                           ; E = (HL)
-;inc  hl                    ; HL = high side address 1st digit
-;ld   d, (hl)               ; D = (HL)
-;ld   hl, POINTS_P1         ; HL = memory address where to paint
-;                           ; points player 1
-;call reprintPoint_print    ; Paint 1st digit marker player 1
-;
-;pop  hl                    ; Retrieves value of HL
-;; 2nd digit of player 1
-;inc  hl			
-;inc  hl                    ; HL = low part 2nd digit address
-;ld   e, (hl)               ; E = (HL)
-;inc  hl                    ; HL = high side address 2nd digit
-;ld   d, (hl)               ; D = (HL)
-;ld   hl, POINTS_P1         ; HL = memory address where to paint
-;                           ; points player 1
-;inc  l                     ; HL = address where to paint 2nd digit
-;call reprintPoint_print    ; Paint 2nd digit marker player 1
-;
-;ld   a, (p2points)         ; A = points player 2
-;call GetPointSprite        ; Gets sprite to be painted on marker
-;push hl                    ; Preserves value of HL
-;; 1st digit of player 2
-;ld   e, (hl)               ; HL = low part 1st digit address
-;                           ; E = (HL)
-;inc  hl                    ; HL = high side address 1st digit
-;ld   d, (hl)               ; D = (HL)
-;ld   hl, POINTS_P2         ; HL = memory address where to paint
-;                           ; points player 2
-;call reprintPoint_print    ; Paint 1st digit marker player 2
-;
-;pop  hl                    ; Retrieves the value of HL
-;; 2nd digit of player 2
-;inc  hl			
-;inc  hl                    ; HL = low part 2nd digit address
-;ld   e, (hl)               ; E = (HL)
-;inc  hl                    ; HL = high side address 2nd digit
-;ld   d, (hl)               ; D = (HL)
-;ld   hl, POINTS_P2         ; HL = memory address where to paint
-;                           ; points player 2
-;inc  l                     ; HL = address where to paint 2nd digit
-;; Paint the second digit of player 2's marker.
-;
-;reprintPoint_print:
-;ld   b, $10                ; Each digit 1 byte by 16 (scanlines)
-;push de
-;push hl                    ; Preserves value of DE and HL
-;reprintPoint_printLoop:
-;ld   a, (de)               ; A = byte to be painted
-;or   (hl)                  ; Mixes it with what is on the screen
-;ld   (hl), a               ; Paints the byte
-;inc  de                    ; Points DE to the next byte
-;call NextScan              ; Points HL to the next scanline
-;djnz reprintPoint_printLoop ; Until B = 0
-;
-;pop  hl
-;pop  de                    ; Retrieves the value of HL and DE
-;
-;ret
 ; ------------------------------------------------------------------------------
