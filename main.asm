@@ -10,7 +10,8 @@ CALL Cls                    ; Clear the screen
 CALL PrintLine              ; Display the centre line/net
 CALL PrintBorder            ; Display the top & bottom borders
 CALL PrintPoints            ; Display score 0-0
-CALL WaitStart              ; Wait for '5' to be pressed to start the game
+;CALL WaitStart              ; Wait for '5' to be pressed to start the game
+CALL WaitSpace
 LD   A, ZERO                ; and reset player scores since we might be
 LD   (p1points), A          ; here at the start of a new game at the end
 LD   (p2points), A          ; of loop_continue

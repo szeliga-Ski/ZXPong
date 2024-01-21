@@ -96,9 +96,19 @@ LD   D, A                   ; store in D
 
 RET
 
-WaitStart:
-LD   A, $F7                 ; A = keys half-row 1-5
-IN   A, ($FE)               ; Read keyboard
-BIT  $04, A                 ; 5 pressed?
-JR   NZ, WaitStart          ; Not pressed, loop
-RET
+;WaitStart:
+;LD   A, $F7                 ; A = keys half-row 1-5
+;IN   A, ($FE)               ; Read keyboard
+;BIT  $04, A                 ; 5 pressed?
+;JR   NZ, WaitStart          ; Not pressed, loop
+;RET
+
+; the original code from the game gets the player to press 5 to start
+; but then every time they win a point the ball gets served automatically
+; so I am going to change it from using key 5 to SPACE & use it to "serve|
+WaitSpace:
+    LD A, $7F               ; the half-row containing the SPACE key
+    in a, ($FE)            ; read keyboard
+    BIT  $00, A                 ; SPACE pressed?
+    jr nz, WaitSpace        ; if not SPACE, loop
+    ret                     ; if SPACE, return

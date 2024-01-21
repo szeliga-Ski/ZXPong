@@ -346,6 +346,14 @@ OR   $19
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
+
+
+LD   HL, PADDLE1POS_INI     ; reset the paddle positions
+LD   (paddle1pos), HL
+LD   HL, PADDLE2POS_INI
+LD   (paddle2pos), HL
+CALL PrintPaddle 
+CALL WaitSpace              ; WAIT FOR THE PLAYER TO SERVE
 RET
 
 SetBallRight:               ; player 1 (on left) lost a point so p2 gets ball
@@ -361,5 +369,12 @@ OR   $59
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
+
+LD   HL, PADDLE1POS_INI     ; reset the paddle positions
+LD   (paddle1pos), HL
+LD   HL, PADDLE2POS_INI
+LD   (paddle2pos), HL
+CALL PrintPaddle 
+CALL WaitSpace               ; WAIT FOR THE PLAYER TO SERVE
 RET
 ;-------------------------------------------------------------------------------
