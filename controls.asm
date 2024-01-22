@@ -17,37 +17,6 @@
 ; ------------------------------------------------------------------------------
 
 ScanKeys:
-;ld   a, $f7                ; A = half-row 1-5
-;in   a, ($fe)              ; Reads half-stack status
-;bit  $00, a                ; 1 pressed?
-;jr   nz, scanKeys_2        ; Not pressed, jumps
-;; Pressed; changes the speed of ball 1 (fast)
-;ld   a, (ballSetting)      ; A = configuration ball A
-;and  $cf                   ; Set the speed bits to 0
-;or   $10                   ; Sets the speed bits to 1
-;ld   (ballSetting), a      ; Load value to memory
-;jr   scanKeys_speed        ; Jump check controls
-;scanKeys_2:
-;bit  $01, a                ; 2 pressed?
-;jr   nz, scanKeys_3        ; Not pressed, skips
-;; Pressed; changes ball speed 2 (middle)
-;ld   a, (ballSetting)      ; A = ball configuration
-;and  $cf                   ; Set the speed bits to 0
-;or   $20                   ; Sets the speed bits to 2
-;ld   (ballSetting), a      ; Load value to memory
-;jr   scanKeys_speed        ; Jump check controls
-;scanKeys_3:
-;bit  $02, a                ; 3 pressed?
-;jr   nz, scanKeys_ctrl     ; Not pressed, skip
-;; Pressed; changes the speed of the ball 3 (slow)
-;ld   a, (ballSetting)      ; A configuration = ball
-;or   $30                   ; Sets the speed bits to 3
-;ld   (ballSetting), a      ; Load value to memory
-;
-;scanKeys_speed:
-;xor  a                     ; A = 0
-;ld   (countLoopBall), a    ; CountLoopBall iterations = 0
-;
 ;scanKeys_ctrl:
 LD   D, $00                 ; reset D register as no key pressed yet
 
@@ -96,9 +65,19 @@ LD   D, A                   ; store in D
 
 RET
 
-WaitStart:
-LD   A, $F7                 ; A = keys half-row 1-5
-IN   A, ($FE)               ; Read keyboard
-BIT  $04, A                 ; 5 pressed?
-JR   NZ, WaitStart          ; Not pressed, loop
-RET
+;WaitStart:
+;LD   A, $F7                 ; A = keys half-row 1-5
+;IN   A, ($FE)               ; Read keyboard
+;BIT  $04, A                 ; 5 pressed?
+;JR   NZ, WaitStart          ; Not pressed, loop
+;RET
+
+; the original code from the game gets the player to press 5 to start
+; but then every time they win a point the ball gets served automatically
+; so I am going to change it from using key 5 to SPACE & use it to "serve|
+WaitSpace:
+    LD A, $7F               ; the half-row containing the SPACE key
+    in a, ($FE)            ; read keyboard
+    BIT  $00, A                 ; SPACE pressed?
+    jr nz, WaitSpace        ; if not SPACE, loop
+    ret                     ; if SPACE, return

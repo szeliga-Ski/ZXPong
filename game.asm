@@ -346,6 +346,20 @@ OR   $19
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
+; MSS: I added the following to reset the paddles to the middle of the screen
+;      after a point has been scored.
+LD   HL, (paddle1pos)
+CALL ErasePaddle
+LD   HL, (paddle2pos)
+CALL ErasePaddle
+LD   HL, PADDLE1POS_INI     ; reset the paddle positions
+LD   (paddle1pos), HL
+CALL PrintPaddle
+LD   HL, PADDLE2POS_INI
+LD   (paddle2pos), HL
+CALL PrintPaddle 
+CALL PrintBall
+CALL WaitSpace              ; WAIT FOR THE PLAYER TO SERVE
 RET
 
 SetBallRight:               ; player 1 (on left) lost a point so p2 gets ball
@@ -361,5 +375,27 @@ OR   $59
 LD   (ballSetting), A       ; store
 LD   A, $00                 ; reset ball movement count
 LD   (ballMovCount), A      ;
+; MSS: I added the following to reset the paddles to the middle of the screen
+;      after a point has been scored.
+LD   HL, (paddle1pos)       ; erase paddle 1
+CALL ErasePaddle            ;
+
+LD   HL, (paddle2pos)       ; erase paddle 2
+CALL ErasePaddle            ;
+
+LD   HL, PADDLE1POS_INI     ; reset the paddle positions
+LD   (paddle1pos), HL
+;LD   HL, (paddle1pos)       ; display paddle 1
+LD   C, PADDLE1             ;
+CALL PrintPaddle            ;
+
+LD   HL, PADDLE2POS_INI
+LD   (paddle2pos), HL
+;LD   HL, (paddle2pos)       ; display paddle 2
+LD   C, PADDLE2             ;
+CALL PrintPaddle            ;
+CALL WaitSpace
+CALL PrintBall
+CALL WaitSpace               ; WAIT FOR THE PLAYER TO SERVE
 RET
 ;-------------------------------------------------------------------------------
